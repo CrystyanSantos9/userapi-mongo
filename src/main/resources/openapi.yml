@@ -1,0 +1,192 @@
+openapi: 3.0.3
+
+info:
+  title: UserApi
+  version: 1.0.1
+  description: REST API de Usuarios
+
+paths:
+  /users:
+    get:
+      operationId: getUsers
+      summary: Consulta Usuarios no sistema
+      tags:
+        - Users
+      parameters:
+        - schema:
+            type: string
+            example: 'User1'
+          name: first_name
+          description: 'Nome'
+          in: query
+          required: false
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{userId}:
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+          example: 1
+        name: userId
+        in: path
+        required: true
+    get:
+      operationId: getUserById
+      summary: Busca um usuário
+      tags:
+        - Users
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateUserById
+      summary: Atualiza um usuario por Id
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '204':
+          description: 'Usuário atualizado'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: removeUser
+      summary: Remove um usuário por id
+      tags:
+        - Users
+      responses:
+        '204':
+          description: 'Usuário removido'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+tags:
+  - name: Users
+    description: Lembretes
+security:
+  - ApiKey: [ ]
+servers:
+  - description: 'Ambiente de produção'
+    url: 'https://dev.cryss.usersapi.com'
+  - description: 'Ambiente local de desenvolvimento'
+    url: 'http://localhost:8080'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: X-Authorization
+      in: header
+      description: 'Token de autenticação'
+  responses:
+    NotFound:
+      description: 'Recurso não encontrado'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    BadRequest:
+      description: 'Requisição inválida'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    InternalServerError:
+      description: 'Erro interno no servidor'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+  schemas:
+    UserList:
+      description: 'UserList'
+      type: array
+      items:
+        $ref: '#/components/schemas/UserDetail'
+    UserDetail:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        firstName:
+          type: string
+          example: 'Paulo'
+        lastName:
+          type: string
+          example: 'Santos'
+        createdAt:
+          type: string
+          format: date
+          example: '2022-01-15 14:00:00'
+    UserInput:
+      type: object
+      required:
+        - firstName
+        - lastName
+      properties:
+        firstName:
+          type: string
+          example: 'Paulo'
+        lastName:
+          type: string
+          example: 'Santos'
+    ErrorMessage:
+      description: 'Representa um modelo de erro na  requisição'
+      type: object
+      required:
+        - status
+        - timestamp
+        - error
+        - message
+        - path
+      properties:
+        status:
+          type: string
+          format: int32
+          example: 400
+        timestamp:
+          type: string
+          format: date-time
+          example: '2022-01-01-T18:09:02Z'
+        error:
+          type: string
+          example: 'Dados inválidos'
+        message:
+          type: string
+          example: 'Um ou mais campos estão inválidos'
+        path:
+          type: string
+          example: '/path'
