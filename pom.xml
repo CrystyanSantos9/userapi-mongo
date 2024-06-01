@@ -151,6 +151,7 @@
 								<generateSupportingFiles>true</generateSupportingFiles>
 								<generateApiDocumentation>true</generateApiDocumentation>
 								<generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+								<unhandledException>true</unhandledException>
 							</configOptions>
 						</configuration>
 					</execution>
