@@ -26,9 +26,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserList'
+                $ref: '#/components/schemas/UsersDataDetail'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: saveUser
+      summary: Salva novo usuário
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '204':
+          description: 'Usuário salvo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /users/{userId}:
@@ -51,7 +70,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserList'
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UsersDataDetail'
         '404':
           $ref: '#/components/responses/NotFound'
     put:
@@ -122,11 +144,14 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorMessage'
   schemas:
-    UserList:
-      description: 'UserList'
-      type: array
-      items:
-        $ref: '#/components/schemas/UserDetail'
+    UsersDataDetail:
+      description: 'UsersDataDetail'
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDetail'
     UserDetail:
       type: object
       required:
