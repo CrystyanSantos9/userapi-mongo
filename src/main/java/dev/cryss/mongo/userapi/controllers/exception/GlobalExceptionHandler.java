@@ -12,6 +12,7 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException exception, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails (new Date (), exception.getMessage (), request.getDescription (true));
@@ -25,8 +26,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> methodArgumentNotValidHandler(Exception ex, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails (new Date (), ex.getMessage (), request.getDescription (false));
+    public ResponseEntity<?> methodArgumentNotValidHandler(MethodArgumentNotValidException  ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails (new Date (), ex.getBindingResult ().getFieldErrors ().toString (), request.getDescription (false));
         return new ResponseEntity<> (errorDetails, HttpStatus.BAD_REQUEST);
     }
 
