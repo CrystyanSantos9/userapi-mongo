@@ -2,12 +2,11 @@ package dev.cryss.mongo.userapi.controllers.mapper;
 
 import dev.cryss.mongo.userapi.domain.model.UserDetailEntity;
 import dev.cryss.mongo.userapi.domain.request.UserInputRequest;
-import dev.cryss.mongo.userapi.domain.response.UserDetailResponse;
 import dev.cryss.mongo.userapi.domain.response.UserDataDetailResponse;
+import dev.cryss.mongo.userapi.domain.response.UserDetailResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.openapitools.model.UserDetail;
 import org.openapitools.model.UserInput;
 import org.openapitools.model.UsersDataDetail;

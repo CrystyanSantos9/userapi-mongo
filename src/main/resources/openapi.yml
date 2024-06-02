@@ -183,9 +183,11 @@ components:
         firstName:
           type: string
           example: 'Paulo'
+          x-field-extra-annotation: '@javax.validation.constraints.NotBlank'
         lastName:
           type: string
           example: 'Santos'
+          x-field-extra-annotation: '@javax.validation.constraints.NotBlank'
     ErrorMessage:
       description: 'Representa um modelo de erro na  requisição'
       type: object
